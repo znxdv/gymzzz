@@ -7,12 +7,13 @@
 
 int main();
 FILE *fp, *ft;
+
 struct gym{
 	int id;
 	char nama[20];
 	char alamat[30];
 	char membersince[30];
-;}; struct gym mbr;
+;};struct gym mbr;
 
 int checkid(int ids){
     rewind(fp);
@@ -21,34 +22,41 @@ int checkid(int ids){
             return 0;
     return 1;
 }
+
 int getdata(){
     int ids;
     time_t current_time = time(NULL);
     struct tm *local_time = localtime(&current_time);
+    
     puts("Silahkan isi data dibawah ini\n");
     printf("ID\t: "); 
     scanf("%6d",&ids); 
     while(getchar()!='\n');
+    
     if(ids>=100000&&ids<1000000){ 
         if(checkid(ids)==0){
             printf("\nID sudah terdaftar, silahkan daftarkan ID yang lain. "); getch(); 
             main();
-        }
+        }    
         mbr.id=ids;
+	    
         printf("Nama    : "); 
         scanf("%[^\n]",mbr.nama);
         printf("Alamat  : "); 
         scanf("%s",mbr.alamat); 
         printf("\nKamu terdaftar sebagai Member Gym Sunib tertanggal %d/%d/%d.\n", local_time->tm_mday, local_time->tm_mon + 1, local_time->tm_year + 1900);
-        strftime(mbr.membersince, sizeof(mbr.membersince), "%d-%m-%Y-", local_time);
-        return 1;
+        strftime(mbr.membersince, sizeof(mbr.membersince), "%d-%m-%Y-", local_time);    
+	return 1;
     }
     else{ 
         printf("\nID harus teridiri dari 6 angka! "); getch();
         main();
     }
 }
-void regist(){ system("cls");
+
+void regist(){    
+    system("cls");
+    
     fp=fopen("gymzzs.txt","a+");
     if(getdata()==1){
         fseek(fp,0,SEEK_END);
@@ -58,7 +66,10 @@ void regist(){ system("cls");
         main();
     }
 }
-void list(){system("cls");
+
+void list(){
+    system("cls");
+    
     fp = fopen("gymzzs.txt", "r");
     if (fp == NULL){
         printf("Belum ada member yang terdaftar. "); getch(); 
@@ -83,7 +94,10 @@ void list(){system("cls");
     printf("\n\nSilahkan kembali ke menu utama."); getch(); 
     main();
 }
-void delete(){ system("cls");
+
+void delete(){ 
+    system("cls");
+    
     int d;
     char hapus='y';
     fp=fopen("gymzzs.txt","r+");
@@ -126,7 +140,10 @@ void delete(){ system("cls");
         main();
     }
 }
-int main(){system("cls");
+
+int main(){
+    system("cls");
+    
     puts("Selamat Datang di Sunib Gym\n");
     puts("[1] Daftar Membership");
     puts("[2] List Member");
@@ -137,23 +154,19 @@ int main(){system("cls");
         case '1': 
             regist();
             break;
-
         case '2': 
             list();
             break;
-
         case '3': 
             delete();
             break;
-
         case '4': 
             puts("\n\nTerimakasih sudah menggunakan Aplikasi Sunib Gym");
             exit(1);
             break;
-
         default : 
             printf("Invalid Input!"); 
-            if(getch())
-                main();
+            if(getch()) main();
     }
+    return 0;
 }
